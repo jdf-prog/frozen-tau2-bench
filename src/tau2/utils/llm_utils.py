@@ -89,13 +89,19 @@ def get_response_cost(response: ModelResponse) -> float:
     """
     Get the cost of the response from the litellm completion.
     """
+    if response is None:
+        print("Ritu log line 93: response is None")
+        return 0.0
+    if response.model is None:
+        print("Ritu log line 95: response.model is None")
+        return 0.0
     response.model = _parse_ft_model_name(
         response.model
     )  # FIXME: Check Litellm, passing the model to completion_cost doesn't work.
     try:
         cost = completion_cost(completion_response=response)
     except Exception as e:
-        logger.error(e)
+        logger.warning(e)
         return 0.0
     return cost
 
@@ -213,6 +219,9 @@ def generate(
             tool_choice=tool_choice,
             **kwargs,
         )
+        if response is None:
+            print("Ritu log line 223: response is None")
+            return None
     except Exception as e:
         logger.error(e)
         raise e

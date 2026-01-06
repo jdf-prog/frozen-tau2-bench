@@ -252,7 +252,13 @@ class Orchestrator:
         start = time.perf_counter()
         self.initialize()
         while not self.done:
-            self.step()
+            try:
+                self.step()
+            except Exception as e:
+                self.done = True
+                print(f"Ritu: Assistant error in step: {e}")
+                self.termination_reason = TerminationReason.ASSISTANT_ERROR
+                break
             if self.step_count >= self.max_steps:
                 self.done = True
                 self.termination_reason = TerminationReason.MAX_STEPS
@@ -319,6 +325,12 @@ class Orchestrator:
             agent_msg, self.agent_state = self.agent.generate_next_message(
                 self.message, self.agent_state
             )
+            # Debug: Print the raw agent message before validation
+            print(f"DEBUG: Raw agent message before validation:")
+            print(f"  Type: {type(agent_msg)}")
+            print(f"  Content: {repr(agent_msg.content)}")
+            print(f"  Tool calls: {repr(getattr(agent_msg, 'tool_calls', None))}")
+            print(f"  Full message: {repr(agent_msg)}")
             agent_msg.validate()
             if self.agent.is_stop(agent_msg):
                 self.done = True
@@ -349,8 +361,9 @@ class Orchestrator:
                     role="tool",
                     tool_messages=tool_msgs,
                 )
-            else:
+            elif len(tool_msgs) == 1:
                 self.message = tool_msgs[0]
+            
             self.to_role = self.from_role
             self.from_role = Role.ENV
         else:
