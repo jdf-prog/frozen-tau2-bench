@@ -228,19 +228,20 @@ def run_tasks(
     if save_to is not None:
         # If save_to already exists, check if the user wants to resume the run.
         if save_to.exists():
-            response = (
-                ConsoleDisplay.console.input(
-                    "[yellow]File [bold]{}[/bold] already exists. Do you want to resume the run? (y/n)[/yellow] ".format(
-                        save_to
-                    )
-                )
-                .lower()
-                .strip()
-            )
-            if response != "y":
-                raise FileExistsError(
-                    f"File {save_to} already exists. Please delete it or use a different save_to name."
-                )
+            print("Detected existing simulation results file at {}. resuming run...".format(save_to))
+            # response = (
+            #     ConsoleDisplay.console.input(
+            #         "[yellow]File [bold]{}[/bold] already exists. Do you want to resume the run? (y/n)[/yellow] ".format(
+            #             save_to
+            #         )
+            #     )
+            #     .lower()
+            #     .strip()
+            # )
+            # if response != "y":
+            #     raise FileExistsError(
+            #         f"File {save_to} already exists. Please delete it or use a different save_to name."
+            #     )
             with open(save_to, "r") as fp:
                 prev_simulation_results = Results.model_validate_json(fp.read())
                 # Check if the run config has changed
@@ -254,19 +255,19 @@ def run_tasks(
                     ConsoleDisplay.console.print(
                         f"The run config has changed.\n\n{diff}\n\nDo you want to resume the run? (y/n)"
                     )
-                    response = (
-                        ConsoleDisplay.console.input(
-                            "[yellow]File [bold]{}[/bold] already exists. Do you want to resume the run? (y/n)[/yellow] ".format(
-                                save_to
-                            )
-                        )
-                        .lower()
-                        .strip()
-                    )
-                    if response != "y":
-                        raise ValueError(
-                            "The run config has changed. Please delete the existing file or use a different save_to name."
-                        )
+                    # response = (
+                    #     ConsoleDisplay.console.input(
+                    #         "[yellow]File [bold]{}[/bold] already exists. Do you want to resume the run? (y/n)[/yellow] ".format(
+                    #             save_to
+                    #         )
+                    #     )
+                    #     .lower()
+                    #     .strip()
+                    # )
+                    # if response != "y":
+                    #     raise ValueError(
+                    #         "The run config has changed. Please delete the existing file or use a different save_to name."
+                    #     )
                 # Check if the task set has changed
                 if not all(
                     get_pydantic_hash(task) == get_pydantic_hash(prev_task)
