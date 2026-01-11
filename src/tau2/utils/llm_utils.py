@@ -265,6 +265,11 @@ def generate(
         for tool_call in tool_calls
     ]
     tool_calls = tool_calls or None
+    
+    # if not tool call, content is None and reasoning_content has the content
+    if not tool_calls and not content and hasattr(response.message, "reasoning_content"):
+        print("Ritu log line 263: Using reasoning_content as content")
+        content = getattr(response.message, "reasoning_content", content)
 
     message = AssistantMessage(
         role="assistant",
