@@ -164,6 +164,9 @@ class AssistantMessage(ParticipantMessageBase):
     """
 
     role: AssistantRole = Field(description="The role of the message sender.")
+    reasoning_content: Optional[str] = Field(
+        description="The reasoning content of the message.", default=None
+    )
 
 
 class UserMessage(ParticipantMessageBase):
