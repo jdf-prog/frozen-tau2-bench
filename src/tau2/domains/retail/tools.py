@@ -425,7 +425,7 @@ class RetailTools(ToolKitBase):  # Tools
             city=city,
             state=state,
             country=country,
-            zip=zip,
+            zip=str(zip),
         )
         return order
 
@@ -638,7 +638,7 @@ class RetailTools(ToolKitBase):  # Tools
             city=city,
             state=state,
             country=country,
-            zip=zip,
+            zip=str(zip),
         )
         return user
 
