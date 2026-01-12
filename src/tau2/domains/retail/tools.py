@@ -38,6 +38,7 @@ class RetailTools(ToolKitBase):  # Tools
         Raises:
             ValueError: If the order is not found.
         """
+        order_id = str(order_id)
         if order_id not in self.db.orders:
             raise ValueError("Order not found")
         return self.db.orders[order_id]
@@ -54,6 +55,7 @@ class RetailTools(ToolKitBase):  # Tools
         Raises:
             ValueError: If the user is not found.
         """
+        user_id = str(user_id)
         if user_id not in self.db.users:
             raise ValueError("User not found")
         return self.db.users[user_id]
@@ -70,6 +72,7 @@ class RetailTools(ToolKitBase):  # Tools
         Raises:
             ValueError: If the product is not found.
         """
+        product_id = str(product_id)
         if product_id not in self.db.products:
             raise ValueError("Product not found")
         return self.db.products[product_id]
@@ -87,6 +90,7 @@ class RetailTools(ToolKitBase):  # Tools
         Raises:
             ValueError: If the variant is not found.
         """
+        product_id = str(product_id)
         product = self._get_product(product_id)
         if variant_id not in product.variants:
             raise ValueError("Variant not found")
@@ -106,6 +110,8 @@ class RetailTools(ToolKitBase):  # Tools
         Raises:
             ValueError: If the payment method is not found.
         """
+        user_id = str(user_id)
+        payment_method_id = str(payment_method_id)
         user = self._get_user(user_id)
         if payment_method_id not in user.payment_methods:
             raise ValueError("Payment method not found")
@@ -217,6 +223,11 @@ class RetailTools(ToolKitBase):  # Tools
             ValueError: If the new items do not exist or do not match the old items.
             ValueError: If the number of items to be exchanged does not match.
         """
+        if isinstance(item_ids, list):
+            item_ids = [str(item_id) for item_id in item_ids]
+        if isinstance(new_item_ids, list):
+            new_item_ids = [str(item_id) for item_id in new_item_ids]
+        
         # check order exists and is delivered
         order = self._get_order(order_id)
         if order.status != "delivered":
@@ -443,6 +454,10 @@ class RetailTools(ToolKitBase):  # Tools
             ValueError: If the new items do not exist or do not match the old items.
             ValueError: If the number of items to be modified does not match.
         """
+        if isinstance(item_ids, list):
+            item_ids = [str(item_id) for item_id in item_ids]
+        if isinstance(new_item_ids, list):
+            new_item_ids = [str(item_id) for item_id in new_item_ids]
 
         # Check if the order exists and is pending
         order = self._get_order(order_id)
@@ -653,6 +668,8 @@ class RetailTools(ToolKitBase):  # Tools
             ValueError: If the payment method is not the original payment method or a gift card.
             ValueError: If the items to be returned do not exist.
         """
+        if isinstance(item_ids, list):
+            item_ids = [str(item_id) for item_id in item_ids]
         order = self._get_order(order_id)
         if order.status != "delivered":
             raise ValueError("Non-delivered order cannot be returned")
