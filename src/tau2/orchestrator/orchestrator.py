@@ -326,11 +326,11 @@ class Orchestrator:
                 self.message, self.agent_state
             )
             # Debug: Print the raw agent message before validation
-            print(f"DEBUG: Raw agent message before validation:")
-            print(f"  Type: {type(agent_msg)}")
-            print(f"  Content: {repr(agent_msg.content)}")
-            print(f"  Tool calls: {repr(getattr(agent_msg, 'tool_calls', None))}")
-            print(f"  Full message: {repr(agent_msg)}")
+            # print(f"DEBUG: Raw agent message before validation:")
+            # print(f"  Type: {type(agent_msg)}")
+            # print(f"  Content: {repr(agent_msg.content)}")
+            # print(f"  Tool calls: {repr(getattr(agent_msg, 'tool_calls', None))}")
+            # print(f"  Full message: {repr(agent_msg)}")
             agent_msg.validate()
             if self.agent.is_stop(agent_msg):
                 self.done = True
