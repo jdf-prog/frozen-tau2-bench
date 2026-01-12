@@ -189,7 +189,26 @@ def to_litellm_messages(messages: list[Message], include_reasoning: bool = False
                     litellm_messages[i]["reasoning_content"] = None
     return litellm_messages
 
-
+def deep_load_tool_arguments(tool_arguments: Any) -> Any:
+    """
+    Recursively load tool arguments from JSON strings to Python objects.
+    """
+    if isinstance(tool_arguments, str):
+        try:
+            loaded = json.loads(tool_arguments)
+            return deep_load_tool_arguments(loaded)
+        except json.JSONDecodeError:
+            return tool_arguments
+    elif isinstance(tool_arguments, list):
+        return [deep_load_tool_arguments(arg) for arg in tool_arguments]
+    elif isinstance(tool_arguments, dict):
+        return {
+            key: deep_load_tool_arguments(value)
+            for key, value in tool_arguments.items()
+        }
+    else:
+        return tool_arguments
+    
 def generate(
     model: str,
     messages: list[Message],
@@ -223,7 +242,7 @@ def generate(
         remove_prev_user_reasoning = False
         print("Ritu log line 219: include_reasoning = False")
     litellm_messages = to_litellm_messages(messages, include_reasoning=include_reasoning, remove_prev_user_reasoning=remove_prev_user_reasoning)
-    print("Ritu log line 221: litellm_messages =", litellm_messages)
+    # print("Ritu log line 221: litellm_messages =", litellm_messages)
     tools = [tool.openai_schema for tool in tools] if tools else None
     if tools and tool_choice is None:
         tool_choice = "auto"
@@ -260,7 +279,8 @@ def generate(
         ToolCall(
             id=tool_call.id,
             name=tool_call.function.name,
-            arguments=json.loads(tool_call.function.arguments),
+            # arguments=json.loads(tool_call.function.arguments),
+            arguments=deep_load_tool_arguments(tool_call.function.arguments),
         )
         for tool_call in tool_calls
     ]

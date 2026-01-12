@@ -285,10 +285,11 @@ class RetailTools(ToolKitBase):  # Tools
             ValueError: If the user is not found.
         """
         for user_id, user in self.db.users.items():
+            # print(f"Checking user {user_id}: {user.name.first_name} {user.name.last_name}, zip {user.address.zip}; comparing with {first_name} {last_name}, zip {zip}")
             if (
                 user.name.first_name.lower() == first_name.lower()
                 and user.name.last_name.lower() == last_name.lower()
-                and user.address.zip == zip
+                and str(user.address.zip) == str(zip)
             ):
                 return user_id
         raise ValueError("User not found")

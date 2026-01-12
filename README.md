@@ -95,12 +95,12 @@ To provide your API keys, copy `.env.example` as `.env` and edit it to include y
 To run a test evaluation on only 5 tasks with 1 trial per task, run:
 
 ```bash
-tau2 run \ 
---domain airline \
+tau2 run \
+--domain retail \
 --agent-llm gpt-4.1 \
 --user-llm gpt-4.1 \
 --num-trials 1 \
---num-tasks 5
+--num-tasks 5 > debug.log 2>&1 &
 ```
 
 Results will be saved in `data/tau2/simulations/`.
