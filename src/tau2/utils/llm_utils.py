@@ -236,11 +236,11 @@ def generate(
     if "deepseek-v3.2" in model.lower():
         include_reasoning = True
         remove_prev_user_reasoning = True
-        print("Ritu log line 217: include_reasoning = True")
+        # print("Ritu log line 217: include_reasoning = True")
     else:
         include_reasoning = False
         remove_prev_user_reasoning = False
-        print("Ritu log line 219: include_reasoning = False")
+        # print("Ritu log line 219: include_reasoning = False")
     litellm_messages = to_litellm_messages(messages, include_reasoning=include_reasoning, remove_prev_user_reasoning=remove_prev_user_reasoning)
     # print("Ritu log line 221: litellm_messages =", litellm_messages)
     tools = [tool.openai_schema for tool in tools] if tools else None
