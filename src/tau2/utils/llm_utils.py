@@ -145,9 +145,11 @@ def to_litellm_messages(messages: list[Message], include_reasoning: bool = False
     Convert a list of Tau2 messages to a list of litellm messages.
     """
     litellm_messages = []
-    for message in messages:
+    last_user_turn_idx = None
+    for idx, message in enumerate(messages):
         if isinstance(message, UserMessage):
             litellm_messages.append({"role": "user", "content": message.content})
+            last_user_turn_idx = idx
         elif isinstance(message, AssistantMessage):
             tool_calls = None
             if message.is_tool_call():
@@ -183,10 +185,10 @@ def to_litellm_messages(messages: list[Message], include_reasoning: bool = False
             litellm_messages.append({"role": "system", "content": message.content})
     if remove_prev_user_reasoning:
         # if last message is from user, remove previous reasoning_content from assistant messages
-        if len(messages) > 0 and isinstance(messages[-1], UserMessage):
-            for i in range(len(litellm_messages) - 1):
-                if litellm_messages[i]["role"] == "assistant":
-                    litellm_messages[i]["reasoning_content"] = None
+        print(f"Ritu log line 201: last_user_turn_idx = {last_user_turn_idx}, total messages = {len(litellm_messages)}")
+        for i in range(last_user_turn_idx):
+            if litellm_messages[i]["role"] == "assistant":
+                litellm_messages[i]["reasoning_content"] = None
     return litellm_messages
 
 def deep_load_tool_arguments(tool_arguments: Any) -> Any:
@@ -233,17 +235,19 @@ def generate(
 
     if model.startswith("claude") and not ALLOW_SONNET_THINKING:
         kwargs["thinking"] = {"type": "disabled"}
-    if "deepseek-v3.2" in model.lower():
+    if any([x in model.lower() for x in ["deepseek-v3.2", "nanov3", "nano_v3", "nemotron-3"]]):
         include_reasoning = True
         remove_prev_user_reasoning = True
-        # print("Ritu log line 217: include_reasoning = True")
+        print("Ritu log line 217: include_reasoning = True")
     else:
         include_reasoning = False
         remove_prev_user_reasoning = False
-        # print("Ritu log line 219: include_reasoning = False")
+        print("Ritu log line 219: include_reasoning = False")
     litellm_messages = to_litellm_messages(messages, include_reasoning=include_reasoning, remove_prev_user_reasoning=remove_prev_user_reasoning)
     # print("Ritu log line 221: litellm_messages =", litellm_messages)
     tools = [tool.openai_schema for tool in tools] if tools else None
+    with open("debug_litellm_messages.jsonl", "a") as f:
+        f.write(json.dumps({"model": model, "messages": litellm_messages, "tools": tools}) + "\n")
     if tools and tool_choice is None:
         tool_choice = "auto"
     try:
@@ -300,6 +304,8 @@ def generate(
         usage=usage,
         raw_data=response.to_dict(),
     )
+    with open("debug_generated_message.jsonl", "a") as f:
+        f.write(json.dumps(message.dict()) + "\n")
     return message
 
 
