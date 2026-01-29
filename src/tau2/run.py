@@ -295,18 +295,23 @@ def run_tasks(
             if not save_to.parent.exists():
                 save_to.parent.mkdir(parents=True, exist_ok=True)
             logger.info(f"Saving simulation batch to {save_to}")
-            with open(save_to, "w") as fp:
+            tmp_save_to = save_to.with_suffix(".tmp")
+            with open(tmp_save_to, "w") as fp:
                 fp.write(simulation_results.model_dump_json(indent=2))
+            tmp_save_to.replace(save_to)
 
     def _save(simulation: SimulationRun):
         if save_to is None:
             return
         with lock:
+            tmp_save_to = save_to.with_suffix(".tmp")
             with open(save_to, "r") as fp:
                 ckpt = json.load(fp)
             ckpt["simulations"].append(simulation.model_dump())
-            with open(save_to, "w") as fp:
+            with open(tmp_save_to, "w") as fp:
+                print(f"Saving checkpoint to {tmp_save_to}")
                 json.dump(ckpt, fp, indent=2)
+            tmp_save_to.replace(save_to)
 
     def _run(task: Task, trial: int, seed: int, progress_str: str) -> SimulationRun:
         console_text = Text(text=f"{progress_str}. Running task {task.id}, trial {trial + 1}", style="bold green")
