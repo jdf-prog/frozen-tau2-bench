@@ -246,8 +246,8 @@ def generate(
     litellm_messages = to_litellm_messages(messages, include_reasoning=include_reasoning, remove_prev_user_reasoning=remove_prev_user_reasoning)
     # print("Ritu log line 221: litellm_messages =", litellm_messages)
     tools = [tool.openai_schema for tool in tools] if tools else None
-    with open("debug_litellm_messages.jsonl", "a") as f:
-        f.write(json.dumps({"model": model, "messages": litellm_messages, "tools": tools}) + "\n")
+    # with open("debug_litellm_messages.jsonl", "a") as f:
+    #     f.write(json.dumps({"model": model, "messages": litellm_messages, "tools": tools}) + "\n")
     if tools and tool_choice is None:
         tool_choice = "auto"
     try:
@@ -304,8 +304,8 @@ def generate(
         usage=usage,
         raw_data=response.to_dict(),
     )
-    with open("debug_generated_message.jsonl", "a") as f:
-        f.write(json.dumps(message.dict()) + "\n")
+    # with open("debug_generated_message.jsonl", "a") as f:
+    #     f.write(json.dumps(message.dict()) + "\n")
     return message
 
 
