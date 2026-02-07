@@ -237,11 +237,7 @@ def generate(
         kwargs["thinking"] = {"type": "disabled"}
     if any([x in model.lower() for x in ["deepseek-v3.2", "nanov3", "nano_v3", "nemotron-3"]]):
         include_reasoning = True
-        if any([x in model.lower() for x in ["nanov3", "nano_v3", "nemotron-3"]]):
-            remove_prev_user_reasoning = False
-            print("Ritu log line 215: include_reasoning = True, remove_prev_user_reasoning = False")
-        else:
-            remove_prev_user_reasoning = True
+        remove_prev_user_reasoning = True
         print("Ritu log line 217: include_reasoning = True")
     else:
         include_reasoning = False
