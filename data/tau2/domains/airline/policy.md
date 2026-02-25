@@ -106,8 +106,8 @@ First, the agent must obtain the user id and reservation id.
 - The user must provide their user id. 
 - If the user doesn't know their reservation id, the agent should help locate it using available tools.
 
-Change flights: 
-- Basic economy flights cannot be modified.
+Change flights:
+- Reservations originally booked as basic economy cannot have their flight segments modified, regardless of any subsequent cabin changes or other multi-step sequences.
 - Other reservations can be modified without changing the origin, destination, and trip type.
 - Some flight segments can be kept, but their prices will not be updated based on the current price.
 - The API does not check these for the agent, so the agent must make sure the rules apply before calling the API!
@@ -118,6 +118,7 @@ Change cabin:
 - Cabin class must remain the same across all the flights in the same reservation; changing cabin for just one flight segment is not possible.
 - If the price after cabin change is higher than the original price, the user is required to pay for the difference.
 - If the price after cabin change is lower than the original price, the user is should be refunded the difference.
+- Note: Changing cabin on a reservation originally booked as basic economy does not remove the flight modification restrictions.
 
 Change baggage and insurance: 
 - The user can add but not remove checked bags.
@@ -144,12 +145,16 @@ Otherwise, flight can be cancelled if any of the following is true:
 - The booking was made within the last 24 hrs
 - The flight is cancelled by airline
 - It is a business flight
-- The user has travel insurance and the reason for cancellation is covered by insurance.
+- The user has travel insurance and the reason for cancellation is covered by insurance (health or weather reasons).
+
+Basic economy cancellation: Reservations originally booked as basic economy can only be cancelled if the booking was made within the last 24 hours, the flight was cancelled by the airline, OR the user has travel insurance and the reason is covered (health/weather).
 
 The API does not check that cancellation rules are met, so the agent must make sure the rules apply before calling the API!
 
 Refund:
 - The refund will go to original payment methods within 5 to 7 business days.
+
+Basic economy refund restrictions: When a basic economy reservation is cancelled (under the allowed conditions above), the refund is limited to airline credits only, not the original payment method, unless the user has travel insurance.
 
 ## Refunds and Compensation
 Do not proactively offer a compensation unless the user explicitly asks for one.

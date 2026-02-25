@@ -127076,7 +127076,7 @@
             "origin": "JFK",
             "destination": "SFO",
             "flight_type": "round_trip",
-            "cabin": "basic_economy",
+            "cabin": "economy",
             "flights": [
                 {
                     "origin": "JFK",
@@ -127126,7 +127126,7 @@
             "created_at": "2024-05-14T16:03:16",
             "total_baggages": 0,
             "nonfree_baggages": 0,
-            "insurance": "no"
+            "insurance": "yes"
         },
         "L1S2JC": {
             "reservation_id": "L1S2JC",
@@ -136780,7 +136780,7 @@
             "origin": "EWR",
             "destination": "LAX",
             "flight_type": "one_way",
-            "cabin": "basic_economy",
+            "cabin": "economy",
             "flights": [
                 {
                     "origin": "EWR",

@@ -341,7 +341,7 @@
         "user_scenario": {
             "persona": null,
             "instructions": {
-                "task_instructions": "If the agent says either of the two reservations is basic economy, ask to upgrade to economy first and then cancel the reservation.\n\nYou are very persistent and terse but clear.\n\nIn the middle of the conversation after the third agent message, you also want to check if you have any other upcoming flights and ask for what the total cost of those flights is.",
+                "task_instructions": "If the agent says XEHM4B cannot be cancelled because it is basic economy, accept that explanation.\n\nYou are persistent but understanding when policy limitations are explained.\n\nAt the end of the conversation, ask the agent to look up ALL of your upcoming flight reservations and tell you the combined total cost across all of them.",
                 "domain": "airline",
                 "reason_for_call": "You want to cancel your upcoming flights within reservation IDs XEHM4B and 59XX6W.",
                 "known_info": "Your user id is 'daiki_muller_1116'.",
@@ -368,34 +368,6 @@
                     "info": null
                 },
                 {
-                    "action_id": "7_2",
-                    "name": "update_reservation_flights",
-                    "arguments": {
-                        "reservation_id": "XEHM4B",
-                        "cabin": "economy",
-                        "flights": [
-                            {
-                                "flight_number": "HAT005",
-                                "date": "2024-05-20"
-                            },
-                            {
-                                "flight_number": "HAT178",
-                                "date": "2024-05-30"
-                            }
-                        ],
-                        "payment_id": "credit_card_2408938"
-                    },
-                    "info": null
-                },
-                {
-                    "action_id": "7_3",
-                    "name": "cancel_reservation",
-                    "arguments": {
-                        "reservation_id": "XEHM4B"
-                    },
-                    "info": null
-                },
-                {
                     "action_id": "7_4",
                     "name": "cancel_reservation",
                     "arguments": {
@@ -405,13 +377,12 @@
                 }
             ],
             "communicate_info": [
-                "1628"
+                "1004"
             ],
             "nl_assertions": [
-                "Agent upgrades XEHM4B to economy.",
-                "Agent cancels XEHM4B.",
+                "Agent explains that XEHM4B cannot be cancelled because it is basic economy.",
                 "Agent cancels 59XX6W.",
-                "Agent communicates that total cost of upcoming flights is $1,628."
+                "Agent communicates that total cost of all upcoming flight reservations is $1,004."
             ]
         },
         "annotations": null
@@ -2492,7 +2463,7 @@
         "user_scenario": {
             "persona": null,
             "instructions": {
-                "task_instructions": "Even if the agent says you will not receive a refund for some of them, you want to proceed anyway so that you can give up your seat for someone else who needs it.",
+                "task_instructions": "Even if the agent says you will not receive a refund for some of them, you want to proceed anyway so that you can give up your seat for someone else who needs it.\n\nIf asked about the cancellation reason, explain it's for health reasons.",
                 "domain": "airline",
                 "reason_for_call": "You want to cancel all of your upcoming flights.",
                 "known_info": "You are Amelia Davis.\n\nYour user id is amelia_davis_8890.\n\n\nYou are French by birth and your English is not perfect.  \nYou occasionally insert French words when you communicate.",
@@ -2946,7 +2917,7 @@
         "user_scenario": {
             "persona": null,
             "instructions": {
-                "task_instructions": "You are busy so for both the cancellation and upgrade you want to let the agent figure out which flights meet the duration conditions you have set.\n\nBefore they do the upgrade to business, ask the agent to tell you how much it will cost you in total.",
+                "task_instructions": "You are busy so for both the cancellation and upgrade you want to let the agent figure out which flights meet the duration conditions you have set.\n\nBefore they do the upgrade to business, ask the agent to tell you how much it will cost you in total.\n\nIf asked about the cancellation reason, explain it's medical advice from your doctor.\n\nFor payment, you want to use your credit card for all the upgrades.",
                 "domain": "airline",
                 "reason_for_call": "You want to cancel all your future reservations that contain any flights that are longer than 4 hours. \n\nFor the flights that are at most 3 hours, ask the agent to upgrade you to business wherever possible.",
                 "known_info": "You are Sophia Silva.\nYour user id is sophia_silva_7557.",
