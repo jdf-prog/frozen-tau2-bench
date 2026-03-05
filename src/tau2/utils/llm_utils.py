@@ -235,7 +235,7 @@ def generate(
 
     if model.startswith("claude") and not ALLOW_SONNET_THINKING:
         kwargs["thinking"] = {"type": "disabled"}
-    if any([x in model.lower() for x in ["deepseek-v3.2", "nanov3", "nano_v3", "nemotron-3"]]):
+    if any([x in model.lower() for x in ["deepseek-v3.2", "nanov3", "nano_v3", "nemotron-3", "super_v3", "superv3", "cosmos"]]):
         include_reasoning = True
         remove_prev_user_reasoning = True
         print("Ritu log line 217: include_reasoning = True")
